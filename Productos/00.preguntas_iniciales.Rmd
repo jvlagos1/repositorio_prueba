@@ -1,1 +1,46 @@
+---
+title: "00.preguntas_iniciales"
+author: "Javiera Lagos Turenne"
+date: "10/12/2021"
+output:
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Pregunta 1:
+
+Cuales son los paises con mas alto ingreso?
+
+##Pregunta 2:
+
+Que paises son los con mayor contaminacion aerea?
+
+##Pregunta 3:
+
+Existe una relacion entre los paises de la pregunta 1 y los de 
+la pregunta 2?
+
+##Pregunta 4:
+
+Que paises tienen una esperanza de vida mas alta? 
+
+##Pregunta 5: 
+Que paises tienen una esperanza de vida mas baja?
+
+##Pregunta 6:
+
+Existe una relacion entre los paises con esperanza de vida mas alta con los
+de ingreso mas alto? y con los de mayor contaminacion?
+
+##Pregunta 7
+
+Si es que hay una relacion, en la pregunta 3 y/o 6 , hay paises 
+en los que no se cumpla esta relacion? 
+
+##Pregunta 8 
+
+Asumiendo que si existen paises que cumplen lo de la pregunta 7,
+hay alguna razon en particular por la que no existe la relacion? (politicas
+publicas, tema cultural, politicas medioambientales, etc.)
