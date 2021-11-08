@@ -1,0 +1,40 @@
+---
+title: "Graficos"
+author: "Javiera Lagos Turenne"
+date: "11/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+summary(PIB_per_capita_por_pais)
+pib_pc = as.data.frame(PIB_per_capita_por_pais)
+chile = pib_pc[43,]
+pibs_chile = as.numeric(chile[5:50])
+anios = as.numeric(pib_pc[3,5:50])
+which(pib_pc[2]=="TLA")
+america_latina = pib_pc[240,]
+pibs_al = as.numeric(america_latina[5:50])
+paises_al = c(13,43,32,33,199,254,49,258,98,224, 190)
+
+
+plot(anios,pibs_chile, ylab= "PIB per Capita (USD)", main="PIB per Capita anual Chile",
+     col = "blue", type = "l", lwd=1)
+lines(anios, pibs_al, lwd=3, col="red")
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pibs, anios)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
