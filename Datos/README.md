@@ -1,15 +1,22 @@
-# Datos
+# Datos PIB per Capita
+##Fuente:
+Banco Mundial https://datos.bancomundial.org/indicador/NY.GDP.PCAP.CD
 
-## Emision CO2 por pais:
-Tabla donde aparece la cantidad de CO2 anual emitida por pais
+#Datos Emision C02 (kt de equivalente de C02)
+##Fuente:
+Banco Mundial https://datos.bancomundial.org/indicador/EN.ATM.GHGT.KT.CE?view=chart
 
-## Emision CO2 (% de Cambio):
-Como ha cambiado la cantidad de CO2 emitida a traves del tiempo
+#Datos Emision C02 (% de Cambio)
+##Fuente:
+Banco Mundial https://datos.bancomundial.org/indicator/EN.ATM.GHGT.ZG?view=chart
 
-## PIB per capita por pais:
-Producto interno bruto per capita promedio por pais medido en dolares
+#Poverty Gap
+Sobre la base de $1.90 USD por dia
 
-## Tasa Empleabilidad:
-En porcentaje, por pais
+##Fuente:
+Banco Mundial https://datos.bancomundial.org/indicador/SI.POV.DDAY?locations=1W&start=1981&end=2015&view=chart
 
-## Poverty Gap
+#Tasa Empleabilidad
+##Fuente
+Banco Mundial https://datos.bancomundial.org/indicador/SL.EMP.MPYR.ZS
+
