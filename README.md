@@ -11,3 +11,5 @@ La carpeta codigo tendra el tipo de codigo usado para el procesamiento y analisi
 
 ## Carpeta Productos
 La carpeta Productos contendra los productos y conclusiones sacadas a traves de los datos
+
+##Cambio
