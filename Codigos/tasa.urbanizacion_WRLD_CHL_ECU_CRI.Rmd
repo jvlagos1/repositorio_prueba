@@ -1,0 +1,110 @@
+---
+title: "Tasa Urbanizacion Anual"
+author: "Javiera Lagos Turenne"
+date: "11/29/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r cars, include=FALSE,results='hide'}
+library(readxl)
+library(tidyverse)
+tasa.urbanizacion <- read_excel("Tasa Anual Urbanizacion % (1950-2050).xls", 
+                                                 col_names = FALSE, skip = 3)
+```
+
+```{r pressure, echo=FALSE, results='hide'}
+tasa.urbanizacion = tasa.urbanizacion[13:287,]
+tasa.urbanizacion_WRLD_CHL_ECU_CRI = tasa.urbanizacion%>%
+  filter(...1=="Index"| ...2=="WORLD" | ...2=="Costa Rica" |...2=="Ecuador"
+         |...2=="Chile")
+tasa.urbanizacion_WRLD_CHL_ECU_CRI = tasa.urbanizacion_WRLD_CHL_ECU_CRI%>%
+  select(-c(...1,...3,...4,...22,...23,...24))
+anios = seq(from =1950, to =2030, by=5)
+anios2= seq(from =1950, to =2030, by=10)
+world = tasa.urbanizacion_WRLD_CHL_ECU_CRI[2,-1]
+
+a = world[-c(2,4,6,8,10,12,14,16)]
+
+plot(anios,world, type="l", col="turquoise", lwd=3, main="Tasa Urbanizacion Mundial",
+     ylab="Tasa Urbanizacion Anual (%)")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+```
+
+```{r press, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+anios = seq(from =1950, to =2030, by=5)
+anios2= seq(from =1950, to =2030, by=10)
+world = tasa.urbanizacion_WRLD_CHL_ECU_CRI[2,-1]
+costarica = tasa.urbanizacion_WRLD_CHL_ECU_CRI[3, -1]
+
+a = world[-c(2,4,6,8,10,12,14,16)]
+b = costarica[-c(2,4,6,8,10,12,14,16)]
+
+plot(anios,costarica, type="l", col="magenta", lwd=3, main="Tasa Urbanizacion Costa Rica"
+     , ylab="Tasa Urbanizacion Anual (%)", ylim=c(0,7))
+lines(anios,world, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = b,col = "red", pch=19, cex=1)
+legend(2000,7,legend = c("Costa Rica", "Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 20, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+```{r pres, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+anios = seq(from =1950, to =2030, by=5)
+anios2= seq(from =1950, to =2030, by=10)
+world = tasa.urbanizacion_WRLD_CHL_ECU_CRI[2,-1]
+
+ecuador = tasa.urbanizacion_WRLD_CHL_ECU_CRI[5,-1]
+c = ecuador[-c(2,4,6,8,10,12,14,16)]
+a = world[-c(2,4,6,8,10,12,14,16)]
+
+plot(anios,ecuador, type="l", col="green", lwd=3, main="Tasa Urbanizacion Ecuador"
+     , ylab="Tasa Urbanizacion Anual (%)", ylim=c(0,7))
+lines(anios,world, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = c,col = "darkgreen", pch=19, cex=1)
+legend(2000,7,legend = c("Ecuador", "Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 20, inset = 0, seg.len = 1, cex = 0.75)
+
+
+```
+
+```{r pre, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+anios = seq(from =1950, to =2030, by=5)
+anios2= seq(from =1950, to =2030, by=10)
+world = tasa.urbanizacion_WRLD_CHL_ECU_CRI[2,-1]
+a = world[-c(2,4,6,8,10,12,14,16)]
+
+chile = tasa.urbanizacion_WRLD_CHL_ECU_CRI[4,-1]
+d = chile[-c(2,4,6,8,10,12,14,16)]
+
+plot(anios,chile, type="l", col="violet", lwd=3, main="Tasa Urbanizacion Chile"
+     , ylab="Tasa Urbanizacion Anual (%)", ylim=c(0,7))
+lines(anios,world, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = d,col = "purple", pch=19, cex=1)
+legend(2000,7,legend = c("Chile", "Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 20, inset = 0, seg.len = 1, cex = 0.75)
+
+
+```
