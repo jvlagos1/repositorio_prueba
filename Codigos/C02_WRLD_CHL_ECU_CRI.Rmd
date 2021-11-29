@@ -1,0 +1,125 @@
+---
+title: "Emision C02"
+author: "Javiera Lagos Turenne"
+date: "11/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r cars, include=FALSE, results='hide'}
+library(readxl)
+library(readr)
+require(tidyverse)
+c02_wrld <- read_excel("c02 mundial.xlsx")
+c02_costarica <- read_excel("c02 costarica.xlsx", col_names = FALSE)
+Emc02 <- read_csv("Emc02.csv")
+```
+
+## Emision C02 (Toneladas per Capita)
+
+```{r pressure, echo=FALSE, results='hide'}
+anios = c02_wrld$TIME
+c02.mundo = c02_wrld$Value
+a = c(1980,1990,2000,2010)
+b = c(c02.mundo[21],c02.mundo[31],c02.mundo[41],c02.mundo[51])
+plot(anios,c02.mundo, type="l", ylim=c(0,5), main="Emision C02 Mundial",
+     ylab="Emision C02 (Ton per Cap)", col="turquoise", lwd=3)
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+```
+
+
+##
+En este grafico se puede ver la evolucion de la emision de C02 
+a traves de los anios
+
+## Emision C02 Capita Costa Rica
+```{r press, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+anios = c02_wrld$TIME
+a = c(1980,1990,2000,2010)
+c02.mundo = c02_wrld$Value
+c02.costarica = c02_costarica$...7
+c = c(c02.costarica[21], c02.costarica[31],c02.costarica[41],c02.costarica[51])
+plot(anios,c02.costarica, type="l", ylim=c(0,10), main="Emision C02 Costa Rica",
+     ylab="Emision C02 (Ton per Cap)", col="magenta", lwd=3)
+lines(anios,c02.mundo, lwd=3, col="turquoise")
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+points(x=a, y = c,col = "red", pch=19, cex=1)
+legend(1994,10,legend = c("Costa Rica", "Prom. Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 18.5, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+
+##
+En este grafico se puede ver la evolucion de la emision de C02 de Costa 
+Rica contrastado con el promedio mundial
+a traves de los anios
+
+
+## Emision C02 Ecuador
+
+```{r pres, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+c02.ec = Emc02 %>%
+  filter(Emc02$LOCATION=="ECU")
+c02.ecuador = c02.ec$Value
+a = c(1980,1990,2000,2010)
+d = c(c02.ecuador[21], c02.ecuador[31],c02.ecuador[41],c02.ecuador[51])
+plot(anios,c02.ecuador, type="l", ylim=c(0,10), main="Emision C02 Ecuador",
+     ylab="Emision C02 (Ton per Cap)", col="green", lwd=3)
+lines(anios,c02.mundo, lwd=3, col="turquoise")
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+points(x=a, y = d,col = "darkgreen", pch=19, cex=1)
+legend(1994,10,legend = c("Ecuador", "Prom. Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 18.5, inset = 0, seg.len = 1, cex = 0.75)
+
+
+```
+
+
+##
+En este grafico se puede ver la evolucion de la emision de C02 de Chile
+contrastado con el promedio mundial
+a traves de los anios
+
+
+## Emision C02 Chile
+```{r pre, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+c02.ch = Emc02 %>%
+  filter(Emc02$LOCATION=="CHL")
+c02.chile = c02.ch$Value
+a = c(1980,1990,2000,2010)
+e = c(c02.chile[21], c02.chile[31],c02.chile[41],c02.chile[51])
+plot(anios,c02.chile, type="l", ylim=c(0,10), main="Emision C02 Chile",
+     ylab="Emision C02 (Ton per Cap)", col="violet", lwd=3)
+lines(anios,c02.mundo, lwd=3, col="turquoise")
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+points(x=a, y = e,col = "purple", pch=19, cex=1)
+legend(1994,10,legend = c("Chile", "Prom. Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 18.5, inset = 0, seg.len = 1, cex = 0.75)
+
+
+
+```
+
+##
+En este grafico se puede ver la evolucion de la emision de C02 de 
+Chile contrastado con el promedio mundial
+a traves de los anios
