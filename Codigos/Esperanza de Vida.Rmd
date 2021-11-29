@@ -1,0 +1,100 @@
+---
+title: "Esperanza de Vida"
+author: "Javiera Lagos Turenne"
+date: "11/29/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r cars, include=FALSE,results='hide'}
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+library(readxl)
+library(tidyverse)
+
+Esperanza_de_Vida <- read_excel("Esperanza de Vida.xls")
+
+
+```
+
+
+```{r pressure, echo=FALSE, results='hide'}
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+esperanza.vida_WRLD_CHL_ECU_CRI = Esperanza_de_Vida%>%
+  filter(Esperanza_de_Vida$`Data Source`=="Country Name" |
+           Esperanza_de_Vida$`Data Source`=="Mundo"|
+           Esperanza_de_Vida$`Data Source`=="Chile"| 
+           Esperanza_de_Vida$`Data Source`=="Ecuador" |
+           Esperanza_de_Vida$`Data Source`=="Costa Rica")
+esperanza.vida_WRLD_CHL_ECU_CRI = esperanza.vida_WRLD_CHL_ECU_CRI%>%
+  select(-c(`Indicadores del desarrollo mundial`,...4, ...3))
+esperanza.vida_WRLD = esperanza.vida_WRLD_CHL_ECU_CRI[5,-1]
+esperanza.vida_CHL = esperanza.vida_WRLD_CHL_ECU_CRI[2,-1]
+esperanza.vida_ECU = esperanza.vida_WRLD_CHL_ECU_CRI[4,-1]
+esperanza.vida_CRI = esperanza.vida_WRLD_CHL_ECU_CRI[3,-1]
+anios = t(esperanza.vida_WRLD_CHL_ECU_CRI[1,-1])
+anios2= seq(from =1960, to =2020, by=10)
+a = c(esperanza.vida_WRLD$...5, esperanza.vida_WRLD$...15, esperanza.vida_WRLD$...25,
+      esperanza.vida_WRLD$...35,esperanza.vida_WRLD$...45,esperanza.vida_WRLD$...55,
+      esperanza.vida_WRLD$...65)
+plot(anios,esperanza.vida_WRLD, type="l", col="turquoise", lwd=3, main="Esperanza de Vida Mundial",
+     ylab="Esperanza de Vida Promedio (Edad)")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+
+```
+
+```{r press, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+b = c(esperanza.vida_CRI$...5, esperanza.vida_CRI$...15, esperanza.vida_CRI$...25,
+      esperanza.vida_CRI$...35,esperanza.vida_CRI$...45,esperanza.vida_CRI$...55,
+      esperanza.vida_CRI$...65)
+plot(anios,esperanza.vida_CRI, type="l", col="magenta", lwd=3, main="Esperanza
+     de Vida Costa Rica", ylab="Esperanza de Vida Promedio (Edad)", ylim=c(50,100))
+lines(anios,esperanza.vida_WRLD, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = b,col = "red", pch=19, cex=1)
+legend(1960,100,legend = c("Costa Rica", "Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+```{r pres, echo=FALSE, results='hide'}
+c = c(esperanza.vida_ECU$...5, esperanza.vida_ECU$...15, esperanza.vida_ECU$...25,
+      esperanza.vida_ECU$...35,esperanza.vida_ECU$...45,esperanza.vida_ECU$...55,
+      esperanza.vida_ECU$...65)
+
+plot(anios,esperanza.vida_ECU, type="l", col="green", lwd=3, main="Esperanza
+     de Vida Ecuador", ylab="Esperanza de Vida Promedio (Edad)", ylim=c(50,80))
+lines(anios,esperanza.vida_WRLD, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = c,col = "darkgreen", pch=19, cex=1)
+legend(1960,80,legend = c("Ecuador", "Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+```{r pre, echo=FALSE, results='hide'}
+d = c(esperanza.vida_CHL$...5, esperanza.vida_CHL$...15, esperanza.vida_CHL$...25,
+      esperanza.vida_CHL$...35,esperanza.vida_CHL$...45,esperanza.vida_CHL$...55,
+      esperanza.vida_CHL$...65)
+
+plot(anios,esperanza.vida_CHL, type="l", col="violet", lwd=3, main="Esperanza
+     de Vida Chile", ylab="Esperanza de Vida Promedio (Edad)", ylim=c(50,90))
+lines(anios,esperanza.vida_WRLD, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = d,col = "purple", pch=19, cex=1)
+legend(1960,90,legend = c("Chile", "Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+```
