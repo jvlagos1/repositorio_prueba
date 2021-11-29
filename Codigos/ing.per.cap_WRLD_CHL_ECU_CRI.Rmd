@@ -1,0 +1,126 @@
+---
+title: "Ingresos per Capitas varios"
+author: "Javiera Lagos Turenne"
+date: "11/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r cars, include=FALSE, results='hide'}
+library(readxl)
+ing.per.cap <- read_excel("Ing per Capita mundial (cte 2010).xls", 
+                                               sheet = "Data", col_names = FALSE,skip = 1)
+```
+## Ingreso per Capita Mundial
+
+```{r pressure, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+iris_transpose <- as.data.frame(t(as.matrix(ing.per.cap)))
+ing.per.t = iris_transpose
+anios = ing.per.t$V3[5:65]
+world = ing.per.t$V261[5:65]
+a = c(anios[21],anios[31],anios[41],anios[51])
+b = c(world[21],world[31],world[41],world[51])
+
+plot(anios,world, type="l", col="turquoise", lwd=3, main="Promedio Ingreso per Capita
+     Mundial", ylab="Ing per Capita Promedio")
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+
+```
+
+##
+En este grafico se puede ver la evolucion del Ingreso promedio per capita mundial 
+a traves de los anios
+
+## Ingreso per Capita Costa Rica
+```{r press, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+ing.per.t = iris_transpose
+costarica = ing.per.t$V50[5:65]
+anios = ing.per.t$V3[5:65]
+world = ing.per.t$V261[5:65]
+c = c(costarica[21], costarica[31],costarica[41],costarica[51])
+
+plot(anios,costarica, type="l", col="magenta", lwd=3, main="Promedio Ingreso per Capita
+     Costa Rica", ylab="Ing per Capita Promedio", ylim=c(0,10000), xlim=c(1970,2020))
+lines(anios,world, lwd=3, col="turquoise")
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+points(x=a, y = c,col = "red", pch=19, cex=1)
+legend(1999,3000,legend = c("Costa Rica", "Prom. Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+
+##
+En este grafico se puede ver la evolucion del Ingreso promedio per capita de Costa 
+Rica contrastado con el promedio mundial
+a traves de los anios
+
+## Ingreso Per Capita Ecuador
+
+```{r pres, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+iris_transpose <- as.data.frame(t(as.matrix(ing.per.cap)))
+ing.per.t = iris_transpose
+anios = ing.per.t$V3[5:65]
+world = ing.per.t$V261[5:65]
+ecuador = ing.per.t$V68[5:65]
+d = c(ecuador[21], ecuador[31],ecuador[41],ecuador[51])
+
+plot(anios,ecuador, type="l", col="green", lwd=3, main="Promedio Ingreso per Capita
+     Ecuador", ylab="Ing per Capita Promedio", ylim=c(0,10000), xlim=c(1970,2020))
+lines(anios,world, lwd=3, col="turquoise")
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+points(x=a, y = d,col = "darkgreen", pch=19, cex=1)
+legend(1970,10000,legend = c("Ecuador", "Prom. Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+
+
+
+```
+
+##
+En este grafico se puede ver la evolucion del Ingreso promedio per capita de 
+Ecuador contrastado con el promedio mundial
+a traves de los anios
+
+## Ingreso per Capita Chile
+```{r pre, echo=FALSE, results='hide'}
+
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+iris_transpose <- as.data.frame(t(as.matrix(ing.per.cap)))
+ing.per.t = iris_transpose
+anios = ing.per.t$V3[5:65]
+world = ing.per.t$V261[5:65]
+chile = ing.per.t$V41[5:65]
+e = c(chile[21], chile[31],chile[41],chile[51])
+plot(anios,chile, type="l", col="violet", lwd=3, main="Promedio Ingreso per Capita
+     Chile", ylab="Ing per Capita Promedio", ylim=c(0,12000), xlim=c(1970,2020))
+lines(anios,world, lwd=3, col="turquoise")
+points(x=a, y = b,col = "blue", pch=19, cex=1)
+points(x=a, y = e,col = "purple", pch=19, cex=1)
+legend(1970,12000,legend = c("Chile", "Prom. Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+
+
+```
+
+##
+En este grafico se puede ver la evolucion del Ingreso promedio per capita de 
+Chile contrastado con el promedio mundial
+a traves de los anios
