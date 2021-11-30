@@ -1,0 +1,116 @@
+---
+title: "Area Selvatica"
+author: "Javiera Lagos Turenne"
+date: "11/29/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r cars, include=FALSE,results='hide'}
+knitr::opts_chunk$set(eval = TRUE, include = TRUE)
+library(readxl)
+library(tidyverse)
+area.selvatica <- read_excel("Area Selvatica1.xls")
+
+
+
+```
+
+
+
+```{r pressure, echo=FALSE, results='hide'}
+area.selvatica_WRLD_CHL_ECU_CRI = area.selvatica%>%
+  filter(area.selvatica$`Data Source`=="Country Name" |
+           area.selvatica$`Data Source`=="Mundo"|
+           area.selvatica$`Data Source`=="Chile"| 
+           area.selvatica$`Data Source`=="Ecuador" |
+           area.selvatica$`Data Source`=="Costa Rica")
+area.selvatica_WRLD_CHL_ECU_CRI = area.selvatica_WRLD_CHL_ECU_CRI%>%
+  select(-c(`Indicadores del desarrollo mundial`,...4, ...3))
+area.selvatica_WRLD = area.selvatica_WRLD_CHL_ECU_CRI[5,-1]
+area.selvatica_CHL = area.selvatica_WRLD_CHL_ECU_CRI[2,-1]
+area.selvatica_ECU = area.selvatica_WRLD_CHL_ECU_CRI[4,-1]
+area.selvatica_CRI = area.selvatica_WRLD_CHL_ECU_CRI[3,-1]
+anios = t(area.selvatica_WRLD_CHL_ECU_CRI[1,-1])
+anios2= seq(from =1960, to =2020, by=10)
+a = c(area.selvatica_WRLD$...5,area.selvatica_WRLD$...15,
+      area.selvatica_WRLD$...25,area.selvatica_WRLD$...35,
+      area.selvatica_WRLD$...45,area.selvatica_WRLD$...55,
+      area.selvatica_WRLD$...65)
+plot(anios,area.selvatica_WRLD, type="l", col="turquoise", lwd=3, main="Area Selvatica Mundial",
+     ylab= "% del Area de la Tierra", xlim=c(1990,2020))
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+```
+
+
+
+```{r press, echo=FALSE, results='hide'}
+b = c(area.selvatica_CRI$...5,area.selvatica_CRI$...15,
+      area.selvatica_CRI$...25,area.selvatica_CRI$...35,
+      area.selvatica_CRI$...45,area.selvatica_CRI$...55,
+      area.selvatica_CRI$...65)
+plot(anios,area.selvatica_CRI, type="l", col="magenta", lwd=3, main="Area
+     Selvatica Costa Rica", ylab="% del Area de la Tierra", xlim=c(1990,2020))
+points(x=anios2, y = b,col = "red", pch=19, cex=1)
+plot(anios,area.selvatica_CRI, type="l", col="magenta", lwd=3, main="Area
+     Selvatica Costa Rica", ylab="% del Area de la Tierra", xlim=c(1990,2020),
+     ylim = c(30,80))
+lines(anios,area.selvatica_WRLD, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = b,col = "red", pch=19, cex=1)
+legend(2010,80,legend = c("Costa Rica", "Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 8, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+```{r pres, echo=FALSE, results='hide'}
+
+c = c(area.selvatica_ECU$...5,area.selvatica_ECU$...15,
+      area.selvatica_ECU$...25,area.selvatica_ECU$...35,
+      area.selvatica_ECU$...45,area.selvatica_ECU$...55,
+      area.selvatica_ECU$...65)
+plot(anios,area.selvatica_ECU, type="l", col="green", lwd=3, main="Area
+     Selvatica Ecuador", ylab="% del Area de la Tierra", xlim=c(1990,2020))
+points(x=anios2, y = c,col = "darkgreen", pch=19, cex=1)
+
+plot(anios,area.selvatica_ECU, type="l", col="green", lwd=3, main="Area
+     Selvatica Ecuador", ylab="% del Area de la Tierra", xlim=c(1990,2020),
+     ylim = c(30,70))
+lines(anios,area.selvatica_WRLD, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = c,col = "darkgreen", pch=19, cex=1)
+legend(2007,70,legend = c("Ecuador", "Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 10, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+```{r pre, echo=FALSE, results='hide'}
+d = c(area.selvatica_CHL$...5,area.selvatica_CHL$...15,
+      area.selvatica_CHL$...25,area.selvatica_CHL$...35,
+      area.selvatica_CHL$...45,area.selvatica_CHL$...55,
+      area.selvatica_CHL$...65)
+
+plot(anios,area.selvatica_CHL, type="l", col="violet", lwd=3, main="Area
+     Selvatica Chile", ylab="% del Area de la Tierra", xlim=c(1990,2020))
+points(x=anios2, y = d,col = "purple", pch=19, cex=1)
+plot(anios,area.selvatica_CHL, type="l", col="violet", lwd=3, main="Area
+     Selvatica Chile", ylab="% del Area de la Tierra", xlim=c(1990,2020),
+     ylim = c(20,37))
+lines(anios,area.selvatica_WRLD, lwd=3, col="turquoise")
+points(x=anios2, y = a,col = "blue", pch=19, cex=1)
+points(x=anios2, y = d,col = "purple", pch=19, cex=1)
+legend(2010,37,legend = c("Chile", "Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 8, inset = 0, seg.len = 1, cex = 0.75)
+```
