@@ -1,0 +1,776 @@
+---
+title: "¿Puede el desarrollo económico y una Buena calidad de vida ser compatibles?: Un análisis de Chile, Ecuador y Costa Rica"
+author: "Javiera Lagos Turenne"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 4
+    number_sections: true
+    theme: united 
+    
+
+  
+---
+# Introduccion
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r cars, include=FALSE, results='hide'}
+library(readxl)
+require(tidyverse)
+library(readr)
+PIB.per.capita <- read_excel("PIB per Capita (USD 2015 cte).xls")
+inflacion <- read_excel("Inflacion/Inflacion (% PIB).xls")
+Esperanza_de_Vida <- read_excel("Esperanza de Vida/Esperanza de Vida.xls")
+c02_costarica <- read_excel("Emision C02/c02 costarica.xlsx", col_names = FALSE)
+c02_wrld <- read_excel("Emision C02/c02 mundial.xlsx")
+Emc02 <- read_csv("Emc02.csv")
+tasa.desempleo <- read_excel("Tasa Desempleo/Tasa Desempleo (% Fuerza Laboral).xls")
+```
+
+Durante los años, se han usado distintos índices para medir el desarrollo de un país. Sin embargo, aunque muchos índices están ligados tanto al desarrollo económico como a la calidad de vida, se suele tener como objetivo más el  ámbito económico que la calidad de vida. Esto último, suele estar más latente en países no desarrollados o en vías de desarrollados. Esto, se debe a que en las primeras etapas de industrialización, los países suelen valorar más el trabajo e ingreso y no tienen suficientes recursos disponibles para enfocar en otros ámbitos. 
+
+A través de este informe, se analizaran tres países: Chile, Ecuador y Costa Rica, en donde se verá como han utilizado sus recursos para mejorar distintos ámbitos en el país. Se eligieron estos últimos, ya que cada uno tuvo un enfoque y resultado distinto. Chile ha logrado un desarrollo económico importante  en los últimos 40 años. Sin embargo, este aumento en índices económicos ha resultado en un aumento en contaminación y deforestación. Ecuador por otro lado, ha priorizado la calidad ambiental principalmente, logrando una mejora económica, pero a nivel menor que Chile. Finalmente, se tiene el caso de Costa Rica el cual ha logrado tanto una mejora económica y ambiental significativa. 
+
+Este análisis se basara en distintos índices, tanto meramente económicos, de calidad de vida y otros ligados a ambos ámbitos. Se compararan estos datos entre ellos y el promedio mundial para discutir como cada país distribuye sus recursos y cuáles han sido sus resultados. Con esto, se tratara de discutir el por qué se suele priorizar el desarrollo económico antes que la calidad de vida. ¿Por qué se suele priorizar el desarrollo económico el cual mejora la calidad de vida por inercia? Por qué no replantear el objetivo y priorizar la calidad de vida, lo cual, por arrastre, mejorara el desarrollo económico.
+
+El análisis del desarrollo estará basado en los siguientes indicadores: PIB per Cápita, Inflación, Tasa de desempleo, esperanza de vida y  Emision de C02.
+
+# Antecedentes
+
+En esta sección, se definirán los conceptos a usar en el análisis y la manera en la cual se medirán. 
+
+- PIB per Capita: El Producto Interno Bruto de un país (PIB) es un indicador económico que expresa el valor monetario de la producción de bienes y servicios de demanda final de un país o región. En este caso, se usara el PIB per cápita, es decir el PIB total dividido por la cantidad de habitantes para representar mejor la situación individual en cada país.En primer lugar, es importante tener en consideración las distintas clasificaciones para esta categoría. Los países están clasificados en tres categorías: Ingreso alto, ingreso medio e Ingreso bajo. En el 2020, el PIB per cápita de un país de bajos ingresos promedio era de USD 755, para los de ingreso medio era de USD 5327 y los de ingresos alto de USD 40.865.  A continuación se tiene una representación grafica de la evolución de este indicador desde el año 1970 hasta el 2020.
+
+- Inflación: La inflación, es el aumento generalizado y sostenido de los precios de los bienes y servicios existentes en el mercado durante un determinado período de tiempo. Cuando el nivel general de precios sube, con cada unidad de moneda se adquieren menos bienes y servicios. Es decir, que la inflación refleja la disminución del poder adquisitivo de la moneda. Para este análisis, se usara el deflactor del PIB como unidad de medida de la inflación. Este refleja la parte del aumento del PIB que se atribuye a la subida de precios en vez del aumento de cantidades producidas. En otras palabras, el deflactor del PIB mide el nivel actual de precios en relación con el año a analizar. 
+
+- Esperanza de Vida: La esperanza de vida es un indicador que mide el promedio de años que se esperaría que una persona viva de acuerdo al país o región en el que vive.  
+
+- Emisión de C02: Las emisiones de C02 han ido aumentando a través de los años a nivel mundial. Este tipo de emisión ha estado ligado al calentamiento global, por lo que se ha tenido como objetivo medio ambiental, disminuir estas emisiones.
+
+- Tasa de Desempleo: La tasa de desempleo es un porcentaje que mide la cantidad de gente desempleada en proporción a los habitantes de la región. En este caso, se usara la tasa de desempleo en función de la fuerza laboral. En otras palabras, la proporción de gente desempleada del total de la fuerza laboral por país. Para este análisis, se medirá este indicador con toneladas per cápita.
+
+# Presentación de los datos y métodos
+
+Para este análisis, se usó la base de datos del Banco Mundial. 
+
+## PIB per Capita 
+
+
+```{r pressure, echo=FALSE, results='hide'}
+PIB.por.income = PIB.per.capita %>%
+  filter(PIB.per.capita$`Data Source`=="Country Name"|
+           PIB.per.capita$`Data Source`=="High income" |
+           PIB.per.capita$`Data Source`=="Low & middle income" |
+           PIB.per.capita$`Data Source`=="Middle income"|
+           PIB.per.capita$`Data Source`=="Lower middle income"|
+           PIB.per.capita$`Data Source`=="Upper middle income"|
+           PIB.per.capita$`Data Source`=="Low income")
+
+
+PIB.por.income2 = PIB.por.income%>%
+  select(-c(`World Development Indicators`, ...4,...3))
+
+anios = t(PIB.por.income2[1,11:62])
+high.income = PIB.por.income2[2,11:62]
+low.income =PIB.por.income2[3,11:62]
+lower.middle.income = PIB.por.income2[4,11:62]
+low.and.middle.income = PIB.por.income2[5,11:62]
+middle.income = PIB.por.income2[6,11:62]
+upper.middle.income = PIB.por.income2[7,11:62]
+
+plot(anios,high.income, type="l", col="blue", lwd=3, main="PIB per Capita",
+     ylab= "USD constantes (2015)",xlab="año", ylim = c(0,50000), xlim = c(1981,2020))
+lines(anios,low.income, lwd=3, col="red")
+lines(anios,middle.income, lwd=3, col="green")
+legend(1981,50000,legend = c("High Income", "Middle Income", "Low Income"),
+       col = c("blue","green","red"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 10, inset = 0, seg.len = 1, cex = 0.55)
+```
+
+### Tabla de Datos 
+
+```{r cxx02, echo=FALSE, results='asis'}
+library(knitr)
+#kable(PIB.per.capita, caption="Inflacion")
+
+```
+Se puede ver que, a pesar que los tres han tenido un aumento relativamente constante, el promedio de los países de alto ingreso ha estado históricamente muy por encima de las otras dos categorías. 
+
+### Chile
+
+En primer lugar, se compara con el promedio mundial: 
+
+```{r chile, echo=FALSE, results='hide'}
+PIB_WRLD_CRI_ECU_CHL = PIB.per.capita %>%
+  filter(PIB.per.capita$`Data Source`=="Country Name"|
+           PIB.per.capita$`Data Source`=="World" |
+           PIB.per.capita$`Data Source`=="Chile" |
+           PIB.per.capita$`Data Source`=="Costa Rica"|
+           PIB.per.capita$`Data Source`=="Ecuador")
+
+PIB.WRLD_CRI_ECU_CHL = PIB_WRLD_CRI_ECU_CHL%>%
+  select(-c(`World Development Indicators`, ...4,...3))
+
+anios2= t(PIB.WRLD_CRI_ECU_CHL[1,2:62])
+PIB_CHL = PIB.WRLD_CRI_ECU_CHL[2,2:62]
+PIB_CRI = PIB.WRLD_CRI_ECU_CHL[3,2:62]
+PIB_ECU = PIB.WRLD_CRI_ECU_CHL[4,2:62]
+PIB_WRLD = PIB.WRLD_CRI_ECU_CHL[5,2:62]
+
+plot(anios2, PIB_WRLD, type="l", col="turquoise", lwd=3, main="PIB per Capita Chile",
+     ylab= "USD constantes (2015)", ylim = c(0,15000),
+     xlab = "año")
+lines(anios2,PIB_CHL, lwd=3, col="purple")
+points(x=anios2[33], y=PIB_CHL[33], pch=19, col="blue")
+points(x=anios2[36], y=PIB_CHL[36], pch=19, col="blue")
+legend(1970,15000,legend = c("Chile", "Promedio Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 20, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+```{r chile2, echo=FALSE, results='hide'}
+
+plot(anios2, PIB_CHL, type="l", col="purple", lwd=3, main="PIB per Capita Chile",
+     ylab= "USD constantes (2015)", ylim = c(0,48000), xlim = c(1970,2020),
+     xlab = "año")
+lines(anios,high.income, lwd=3, col="blue")
+lines(anios,upper.middle.income, lwd=3, col="darkorange2")
+legend(1970,48000,legend = c("Chile", "High Income", "Upper Middle Income"),
+       col = c("purple","blue","darkorange2"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 18, inset = 0, seg.len = 1, cex = 0.55)
+
+```
+ 
+### Ecuador 
+
+En primer lugar se compara con el promedio mundial:
+
+```{r ecuador, echo=FALSE, results='hide'}
+plot(anios2, PIB_WRLD, type="l", col="turquoise", lwd=3, main="PIB per Capita Ecuador",
+     ylab= "USD constantes (2015)", ylim = c(0,15000), xlim = c(1970,2020),
+     xlab = "año")
+lines(anios2,PIB_ECU, lwd=3, col="green")
+legend(1970,15000,legend = c("Ecuador", "Promedio Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 20, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+En comparación con las categorías de ingreso, se tiene lo siguiente: 
+
+```{r ecuador2, echo=FALSE, results='hide'}
+plot(anios2, PIB_ECU, type="l", col="green", lwd=3, main="PIB per Capita Ecuador",
+     ylab= "USD constantes (2015)", ylim = c(0,45000), xlim = c(1970,2020),
+     xlab = "año")
+lines(anios,high.income, lwd=3, col="blue")
+lines(anios,upper.middle.income, lwd=3, col="darkorange2")
+legend(1970,45000,legend = c("Ecuador", "High Income", "Upper Middle Income"),
+       col = c("green","blue","darkorange2"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 12, inset = 0, seg.len = 1, cex = 0.55)
+plot(anios2, PIB_ECU, type="l", col="green", lwd=3, main="PIB per Capita Ecuador",
+     ylab= "USD constantes (2015)", ylim = c(0,10000), xlim = c(1970,2020),
+     xlab = "año")
+lines(anios,upper.middle.income, lwd=3, col="darkorange2")
+lines(anios,middle.income, lwd=3, col="red")
+lines(anios,lower.middle.income, lwd=3, col="black")
+points(x = anios2[45], y=PIB_ECU[45], col="blue", pch=19)
+points(x = anios2[48], y=PIB_ECU[48], col="blue", pch=19)
+legend(1970,10000,legend = c("Ecuador", "Upper Middle Income", "Middle Income",
+                             "Lower Middle Income"),
+       col = c("green","darkorange2","red","black"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 21, inset = 0, seg.len = 1, cex = 0.55)
+```
+
+
+```{r ecuador3, echo=FALSE, results='hide'}
+plot(anios2, PIB_ECU, type="l", col="green", lwd=3, main="PIB per Capita Ecuador",
+     ylab= "USD constantes (2015)", ylim = c(0,10000), xlim = c(1970,2020),
+     xlab = "año")
+lines(anios,upper.middle.income, lwd=3, col="darkorange2")
+lines(anios,middle.income, lwd=3, col="red")
+lines(anios,lower.middle.income, lwd=3, col="black")
+points(x = anios2[45], y=PIB_ECU[45], col="blue", pch=19)
+points(x = anios2[48], y=PIB_ECU[48], col="blue", pch=19)
+legend(1970,10000,legend = c("Ecuador", "Upper Middle Income", "Middle Income",
+                             "Lower Middle Income"),
+       col = c("green","darkorange2","red","black"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 21, inset = 0, seg.len = 1, cex = 0.55)
+```
+
+### Costa Rica 
+
+A continuación se representa gráficamente el PIB per cápita de Costa Rica en comparación al promedio mundial
+
+```{r costarica, echo=FALSE, results='hide'}
+plot(anios2, PIB_WRLD, type="l", col="turquoise", lwd=3, main="PIB per Capita Costa Rica",
+     ylab= "USD constantes (2015)", ylim = c(3700,13000), xlim = c(1960,2020),
+     xlab = "año")
+lines(anios2,PIB_CRI, lwd=3, col="magenta")
+points(x=anios2[39], y=PIB_CRI[39], pch=19, col="blue")
+points(x=anios2[47], y=PIB_CRI[47], pch=19, col="blue")
+points(x=anios2[13], y=PIB_CRI[13], pch=19, col="black")
+points(x=anios2[17], y=PIB_CRI[17], pch=19, col="black")
+legend(1960,13000,legend = c("Costa Rica", "Promedio Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+```{r costarica2, echo=FALSE, results='hide'}
+plot(anios2, PIB_CRI, type="l", col="magenta", lwd=3, main="PIB per Capita Costa Rica",
+     ylab= "USD constantes (2015)", ylim = c(0,45000), xlim = c(1970,2020),
+     xlab = "año")
+lines(anios,high.income, lwd=3, col="blue")
+lines(anios,upper.middle.income, lwd=3, col="darkorange2")
+legend(1970,45000,legend = c("Costa Rica", "High Income", "Upper Middle Income"),
+       col = c("magenta","blue","darkorange2"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+### Chile, Ecuador y Costa Rica comparados
+
+Teniendo en cuenta el análisis por separado de cada país con las distintas categorías y promedio mundial. Ahora se representara la relación entre los tres países a evaluar. 
+
+```{r cc, echo=FALSE, results='hide'}
+
+plot(anios2, PIB_CHL, type="l", col="purple", lwd=3, main="PIB per Capita Comparados",
+     ylab= "USD constantes (2015)", ylim = c(0,15000), xlim = c(1970,2020),
+     xlab = "año")
+lines(anios2,PIB_CRI, lwd=3, col="magenta")
+lines(anios2,PIB_ECU, lwd=3, col="green")
+points(x=anios2[26], y=PIB_ECU[26], pch=19, col="blue")
+points(x=anios2[15], y=PIB_ECU[15], pch=19, col="blue")
+points(x=anios2[36], y=PIB_CRI[36], pch=19, col="black")
+points(x=anios2[32], y=PIB_CRI[32], pch=19, col="black")
+legend(1970,15000,legend = c("Chile", "Costa Rica", "Ecuador"),
+       col = c("purple","magenta","green"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 14, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+## Inflación 
+
+```{r inflacion, echo=FALSE, results='hide'}
+inflacion_WRLD_CHL_ECU_CRI = inflacion%>%
+  filter(inflacion$`Data Source`=="Country Name" |
+           inflacion$`Data Source`=="World"|
+           inflacion$`Data Source`=="Chile"| 
+           inflacion$`Data Source`=="Ecuador" |
+           inflacion$`Data Source`=="Costa Rica")
+inflacion_WRLD_CHL_ECU_CRI = inflacion_WRLD_CHL_ECU_CRI%>%
+  select(-c(`World Development Indicators`,...4, ...3))
+inflacion_WRLD = inflacion_WRLD_CHL_ECU_CRI[5,-1]
+inflacion_CHL = inflacion_WRLD_CHL_ECU_CRI[2,-1]
+inflacion_ECU = inflacion_WRLD_CHL_ECU_CRI[4,-1]
+inflacion_CRI = inflacion_WRLD_CHL_ECU_CRI[3,-1]
+anios = t(inflacion_WRLD_CHL_ECU_CRI[1,-1])
+
+plot(anios,inflacion_WRLD, type="l", col="turquoise", lwd=3, main="Inflacion Mundial",
+     ylab= "Deflactor del PIB", xlim=c(1970,2020), xlab="año")
+```
+
+### Tabla de Datos 
+
+```{r infla, echo=FALSE, results='asis'}
+library(knitr)
+kable(inflacion_WRLD_CHL_ECU_CRI, caption="Inflacion")
+
+```
+
+
+### Chile
+
+```{r inflacionch, echo=FALSE, results='hide'}
+
+plot(anios,inflacion_CHL, type="l", col="purple", lwd=3, main="Inflacion Chile Original",
+     ylab= "Deflactor del PIB", xlim=c(1960,2020), ylim = c(0,700), xlab= "año")
+points(x=anios[12], y=inflacion_CHL[12], pch=19, col="blue")
+points(x=anios[22], y=inflacion_CHL[22], pch=19, col="blue")
+points(x=anios[15], y=inflacion_CHL[15], pch=19, col="red")
+legend(2005,700,legend = c("Chile", "1971-1981","1974"),
+       col = c("purple","blue","red"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 10, inset = 0, seg.len = 1, cex = 0.75)
+
+infl = as.numeric(inflacion_CHL[1,2:61])
+infl2 = as.numeric(inflacion_CHL[1,2:12])
+infl3 = as.numeric(inflacion_CHL[1,22:61])
+
+m = sum(infl2)+sum(infl3)
+d = length(infl2) + length(infl3)
+inflacion_prom_CHL = m/d
+inflacion_CHL[15]
+
+
+```
+
+
+```{r inflacionch2, echo=FALSE, results='hide'}
+plot(anios,inflacion_CHL, type="l", col="purple", lwd=3, main="Inflacion Chile",
+     ylab= "Deflactor del PIB", xlim=c(1980,2020), ylim = c(0,50),xlab="año")
+lines(anios,inflacion_WRLD, lwd=3, col="turquoise")
+points(x=anios[36],y=inflacion_CHL[36], pch=19, col="blue")
+points(x=anios[41],y=inflacion_CHL[41], pch=19, col="blue")
+points(x=anios[48],y=inflacion_CHL[48], pch=19, col="black")
+points(x=anios[54],y=inflacion_CHL[54], pch=19, col="black")
+legend(2003,50,legend = c("Chile", "Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 12, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+### Costa Rica
+
+```{r inflacioncr, echo=FALSE, results='hide'}
+plot(anios,inflacion_CRI, type="l", col="magenta", lwd=3, main="Inflacion Costa Rica",
+     ylab= "Deflactor del PIB", xlim=c(1960,2020),xlab="año")
+lines(anios,inflacion_WRLD, lwd=3, col="turquoise")
+legend(2003,80,legend = c("Costa Rica", "Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 12, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+```{r inflacionecr1, echo=FALSE, results='hide'}
+plot(anios,inflacion_CRI, type="l", col="magenta", lwd=3, main="Inflacion Costa Rica 2010-2020",
+     ylab= "Deflactor del PIB", xlim=c(2010,2020),xlab="año", ylim=c(0,10))
+lines(anios,inflacion_WRLD, lwd=3, col="turquoise")
+points(x = anios[57],y=inflacion_CRI[57], pch=19, col="blue")
+legend(2016,10,legend = c("Costa Rica", "Mundial", "2016"),
+       col = c("magenta","turquoise", "blue"),
+       pch=c("",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 3, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+### Ecuador 
+
+```{r inflacionecu, echo=FALSE, results='hide'}
+plot(anios,inflacion_ECU, type="l", col="green", lwd=3, main="Inflacion Ecuador",
+     ylab= "Deflactor del PIB", xlim=c(1973,2020), ylim = c(-25,60),xlab="año")
+lines(anios,inflacion_WRLD, lwd=3, col="turquoise")
+points(x = anios[15], inflacion_ECU[15], pch=19, col="blue")
+points(x = anios[42], inflacion_ECU[42], pch=19, col="blue")
+points(x = anios[40], inflacion_ECU[40], pch=19, col="red")
+lines(anios[12:61], rep(0,50), lwd=1, col="black")
+legend(2003,60,legend = c("Ecuador", "Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 11, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+ 
+### Chile, Ecuador y Costa Rica comparados
+
+
+```{r inflacioncomp, echo=FALSE, results='hide'}
+plot(anios,inflacion_CHL, type="l", col="purple", lwd=3, main="Inflaciones Comparadas",
+     ylab= "Deflactor del PIB", xlim=c(1980,2020), ylim = c(-25,90),xlab="año")
+lines(anios,inflacion_CRI, lwd=3, col="red")
+lines(anios,inflacion_ECU, lwd=3, col="green")
+legend(2003,90,legend = c("Chile", "Ecuador","Costa Rica"),
+       col = c("purple","green","red"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 12, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+## Esperanza de Vida
+
+### Tabla de Datos
+
+```{r 3w, echo=FALSE, results='asis'}
+library(knitr)
+esperanza.vida_WRLD_CHL_ECU_CRI = Esperanza_de_Vida%>%
+  filter(Esperanza_de_Vida$`Data Source`=="Country Name" |
+           Esperanza_de_Vida$`Data Source`=="Mundo"|
+           Esperanza_de_Vida$`Data Source`=="Chile"| 
+           Esperanza_de_Vida$`Data Source`=="Ecuador" |
+           Esperanza_de_Vida$`Data Source`=="Costa Rica")
+esperanza.vida_WRLD_CHL_ECU_CRI = esperanza.vida_WRLD_CHL_ECU_CRI%>%
+  select(-c(`Indicadores del desarrollo mundial`,...4, ...3))
+esperanza.vida_WRLD = esperanza.vida_WRLD_CHL_ECU_CRI[5,-1]
+esperanza.vida_CHL = esperanza.vida_WRLD_CHL_ECU_CRI[2,-1]
+esperanza.vida_ECU = esperanza.vida_WRLD_CHL_ECU_CRI[4,-1]
+esperanza.vida_CRI = esperanza.vida_WRLD_CHL_ECU_CRI[3,-1]
+anios = t(esperanza.vida_WRLD_CHL_ECU_CRI[1,-1])
+kable(esperanza.vida_WRLD_CHL_ECU_CRI, caption="Esperanza de Vida")
+
+```
+
+### Chile
+
+```{r espvidach, echo=FALSE, results='hide'}
+
+
+plot(anios,esperanza.vida_CHL, type="l", col="violet", lwd=3, main="Esperanza
+     de Vida Chile", ylab="Edad Promedio", ylim=c(50,90))
+lines(anios,esperanza.vida_WRLD, lwd=3, col="turquoise")
+legend(1960,90,legend = c("Chile", "Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+
+
+```
+
+### Costa Rica 
+
+```{r espvidacr, echo=FALSE, results='hide'}
+plot(anios,esperanza.vida_CRI, type="l", col="magenta", lwd=3, main="Esperanza
+     de Vida Costa Rica", ylab="Edad Promedio", ylim=c(50,100))
+lines(anios,esperanza.vida_WRLD, lwd=3, col="turquoise")
+legend(1960,100,legend = c("Costa Rica", "Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+### Ecuador 
+
+```{r espvidaecu, echo=FALSE, results='hide'}
+
+plot(anios,esperanza.vida_ECU, type="l", col="green", lwd=3, main="Esperanza
+     de Vida Ecuador", ylab="Edad Promedio", ylim=c(50,80))
+lines(anios,esperanza.vida_WRLD, lwd=3, col="turquoise")
+points(x = anios[20],y=esperanza.vida_ECU[20],pch=19, col= "blue")
+points(x = anios[1],y=esperanza.vida_ECU[1], pch=19, col="blue")
+legend(1960,80,legend = c("Ecuador", "Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+### Chile, Ecuador y Costa Rica 
+
+```{r espvidacomp, echo=FALSE, results='hide'}
+
+plot(anios,esperanza.vida_CHL, type="l", col="violet", lwd=3, main="Esperanzas
+     de Vida Comparadas", ylab="Edad Promedio", ylim=c(50,93))
+lines(anios,esperanza.vida_CRI, lwd=3, col="red")
+lines(anios,esperanza.vida_ECU, lwd=3, col="green")
+points(anios[46],esperanza.vida_CRI[46], pch=19,col="blue")
+legend(1960,93,legend = c("Chile", "Costa Rica", "Ecuador"),
+       col = c("purple","red","green"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 16, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+## Emisión de C02
+
+### Tabla de Datos
+
+```{r c02, echo=FALSE, results='asis'}
+library(knitr)
+anios = c02_wrld$TIME
+c02.mundo = c02_wrld$Value
+c02.ch = Emc02 %>%
+  filter(Emc02$LOCATION=="CHL")
+c02.chile = c02.ch$Value
+c02.ec = Emc02 %>%
+  filter(Emc02$LOCATION=="ECU")
+c02.ecuador = c02.ec$Value
+anios = c02_wrld$TIME
+c02.mundo = c02_wrld$Value
+c02.costarica = c02_costarica$...7
+anioss= as.numeric(seq(1971, to=2020, by=1))
+tabla_c02 = rbind(anioss,c02.chile[12:61],c02.costarica[12:61],c02.ecuador[12:61],c02.mundo[12:61])
+nombres = c("", "Chile","Costa Rica","Ecuador","Mundo")
+tt = cbind(nombres,tabla_c02)
+kable(tt, caption="Emision de C02")
+
+```
+
+### Chile
+
+```{r co2ch, echo=FALSE, results='hide'}
+plot(anios,c02.chile, type="l", ylim=c(0,10), main="Emision C02 Chile",
+     ylab="Emision C02 (Ton per Cap)", col="purple", lwd=3)
+lines(anios,c02.mundo, lwd=3, col="turquoise")
+points(x = anios[52],y=c02.chile[52], pch=19, col="blue")
+legend(1994,10,legend = c("Chile", "Prom. Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 18.5, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+### Costa Rica 
+
+```{r co2cri, echo=FALSE, results='hide'}
+
+plot(anios,c02.costarica, type="l", ylim=c(0,10), main="Emision C02 Costa Rica",
+     ylab="Emision C02 (Ton per Cap)", col="magenta", lwd=3)
+lines(anios,c02.mundo, lwd=3, col="turquoise")
+legend(1994,10,legend = c("Costa Rica", "Prom. Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 18.5, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+### Ecuador
+
+```{r co2ecu, echo=FALSE, results='hide'}
+
+plot(anios,c02.ecuador, type="l", ylim=c(0,10), main="Emision C02 Ecuador",
+     ylab="Emision C02 (Ton per Cap)", col="green", lwd=3)
+lines(anios,c02.mundo, lwd=3, col="turquoise")
+legend(1994,10,legend = c("Ecuador", "Prom. Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 18.5, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+### Chile, Ecuador y Costa Rica 
+
+```{r co2comp, echo=FALSE, results='hide'}
+plot(anios,c02.chile, type="l", ylim=c(0,8), main="Emisiones C02 Comparadas",
+     ylab="Emision C02 (Ton per Cap)", col="purple", lwd=3)
+lines(anios,c02.costarica, lwd=3, col="red")
+lines(anios,c02.ecuador, lwd=3, col="green")
+legend(1960,8,legend = c("Chile", "Costa Rica", "Ecuador"),
+       col = c("purple","red","green"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 14, inset = 0, seg.len = 1, cex = 0.75)
+
+
+```
+
+## Tasa de Desempleo
+
+### Tabla de Datos 
+```{r desempleo2, echo=FALSE, results='hide'}
+desempleo_WRLD_CHL_ECU_CRI = tasa.desempleo%>%
+  filter(tasa.desempleo$`Data Source`=="Country Name" |
+           tasa.desempleo$`Data Source`=="World"|
+           tasa.desempleo$`Data Source`=="Chile"| 
+           tasa.desempleo$`Data Source`=="Ecuador" |
+           tasa.desempleo$`Data Source`=="Costa Rica")
+desempleo_WRLD_CHL_ECU_CRI = desempleo_WRLD_CHL_ECU_CRI%>%
+  select(-c(`World Development Indicators`,...4, ...3))
+desempleo_WRLD = desempleo_WRLD_CHL_ECU_CRI[5,-1]
+desempleo_CHL = desempleo_WRLD_CHL_ECU_CRI[2,-1]
+desempleo_ECU = desempleo_WRLD_CHL_ECU_CRI[4,-1]
+desempleo_CRI = desempleo_WRLD_CHL_ECU_CRI[3,-1]
+anios = t(desempleo_WRLD_CHL_ECU_CRI[1,-1])
+paises=desempleo_WRLD_CHL_ECU_CRI[1]
+```
+
+```{r desempleo3, echo=FALSE, results='asis'}
+
+des = desempleo_WRLD_CHL_ECU_CRI[33:61]
+tabla_desempleo = cbind(paises,des)
+kable(tabla_desempleo, caption="Tasa de Desempleo")
+
+```
+
+### Chile 
+
+```{r desempleo, echo=FALSE, results='hide'}
+
+plot(anios,desempleo_CHL, type="l", col="purple", lwd=3, main="Tasa Desempleo
+     Chile",ylab= "(%) de la Fuerza Laboral", xlim=c(1990,2020), ylim=c(3,16))
+lines(anios,desempleo_WRLD, lwd=3, col="turquoise")
+points(x=anios[35],y=desempleo_CHL[35], col="blue", pch=19)
+points(x=anios[37],y=desempleo_CHL[37], col="blue", pch=19)
+legend(1990,16,legend = c("Chile", "Mundial"),
+       col = c("purple","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 12, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+### Costa Rica
+
+```{r desempleocr, echo=FALSE, results='hide'}
+plot(anios,desempleo_CRI, type="l", col="magenta", lwd=3, main="Tasa Desempleo
+     Costa Rica",ylab= "(%) de la Fuerza Laboral", xlim=c(1990,2020))
+lines(anios,desempleo_WRLD, lwd=3, col="turquoise")
+points(anios[49],desempleo_CRI[49], pch=19, col="blue")
+legend(1990,17,legend = c("Costa Rica", "Mundial"),
+       col = c("magenta","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 12, inset = 0, seg.len = 1, cex = 0.75)
+
+```
+
+### Ecuador 
+
+```{r desempleoec, echo=FALSE, results='hide'}
+
+plot(anios,desempleo_ECU, type="l", col="green", lwd=3, main="Tasa Desempleo
+     Ecuador",ylab= "(%) de la Fuerza Laboral", xlim=c(1990,2020), ylim=c(3,8))
+lines(anios,desempleo_WRLD, lwd=3, col="turquoise")
+legend(1990,8,legend = c("Ecuador", "Mundial"),
+       col = c("green","turquoise"),
+       pch=c("",""), lty=c(1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 12, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+
+### Chile, Ecuador y Costa Rica
+
+```{r desempleocomp, echo=FALSE, results='hide'}
+plot(anios,desempleo_CHL, type="l", col="purple", lwd=3, main="Tasas de Desempleo
+     Comparadas",ylab= "(%) de la Fuerza Laboral", xlim=c(1990,2020), ylim=c(3,18))
+lines(anios,desempleo_CRI, lwd=3, col="red")
+lines(anios,desempleo_ECU, lwd=3, col="green")
+legend(1990,18,legend = c("Chile", "Ecuador", "Costa Rica"),
+       col = c("purple","green","red"),
+       pch=c("","",""), lty=c(1,1,1), ncol=1, merge = TRUE,
+       lwd = c(2,2,2,2,2,2), bty = "o", box.lwd = 0.05, box.col = 1, xjust = 0, 
+       yjust = 1, text.width = 8, inset = 0, seg.len = 1, cex = 0.75)
+```
+
+# Resultados 
+
+## PIB per Capita
+
+### Chile:
+
+- Grafico 1: Ha tenido un aumento significativo en su PIB per cápita a través de los años. De hecho, logra superar el promedio mundial en el periodo entre 1992-1995 (representado por los puntos azules) y se ha mantenido constante sobre este durante los años.
+
+- Grafico 2: Se puede ver que, se ha mantenido sobre el promedio de ingreso medio-alto, pero muy por debajo del de ingreso alto. Su evolución en comparación a estas dos categorías no ha sido tan significativa como en la comparación con el promedio mundial.
+
+### Ecuador:
+
+- Grafico 1: Se puede ver que Ecuador, a pesar de tener una mejora en su desarrollo económico, no ha sido capaz de superar el promedio mundial todavía. Es más, se puede ver que en los últimos 20 años, la curva de ecuador se ha ido alejando de la del promedio mundial. 
+
+- Grafico 2: Se tiene que la curva de Ecuador se ha mantenido muy por debajo de la de ingresos altos y muy cerca de los ingresos medio-altos. Sin embargo, se puede ver que Ecuador queda por debajo del promedio de ingreso medio-alto en un punto. Por esto, se analizara nuevamente, pero en comparación con las sub categorías ingresos medio-alto, medio y medio-bajo. 
+
+- Grafico 3: Con este grafico, se puede visualizar con mayor detalle la evolución de la curva de Ecuador. En efecto, se puede ver que esta ultima efectivamente queda por debajo de la curva naranja. Los puntos azules representan el PIB per cápita de Ecuador para los años 2004 y 2007 respectivamente. Es en este periodo, que este queda por debajo del ingreso medio-alto. 
+
+### Costa Rica:
+
+- Grafico 1: A través de este grafico, se puede ver que la evolución del PIB en Costa Rica no ha sido constante. Entre los periodos de 1960 a 1972 su curva está por debajo del promedio mundial, entre 1972 y 1976 (puntos negros) se ve cómo la curva costarricense supera al promedio mundial, pero dura solo un par de años y vuelve a quedar por debajo de la curva celeste. Nuevamente, entre 1998 y 2006, la curva rosada logra superar a la del promedio, lo cual se mantiene hasta el presente, esto resulta en que el PIB per Cápita de Costa Rica este sobre el promedio mundial en los últimos quince años.
+
+- Grafico 2: Al igual que Chile, Costa Rica no ha tenido una evolución significativa en cuanto a su cercanía o lejanía con las curvas de alto ingreso y medio-alto, ya que ha estado constantemente sobre la última, pero muy por debajo de la de altos ingresos. 
+
+### Chile,Ecuador y Costa Rica 
+
+Teniendo en cuenta el análisis por separado de cada país con las distintas categorías y promedio mundial. Ahora se representara la relación entre los tres países a evaluar. 
+
+Es evidente que Ecuador ha estado constantemente bajo las curvas de Chile y Costa Rica, a excepción del periodo entre 1974 y 1985 (puntos azules), en donde logra alcanzar la curva de Costa Rica, pero rápidamente vuelve a quedar por debajo de las otras dos hasta la actualidad. Por otro lado, Costa Rica tuvo un PIB per cápita mas alto que Chile hasta 1991, pero durante los años 1991 y 1995, Chile logra superarlo y se ha mantenido por sobre Costa Rica y Ecuador hasta hoy.
+
+Basándose únicamente en este indicador, se podría concluir que, a pesar que los tres países se encuentran sobre el promedio de los países de ingreso medio, Chile es el con PIB per cápita mas alto desde los últimos 25 años aproximadamente. Bajo esto, Chile se consideraría el país más desarrollado económicamente.
+
+## Inflacion 
+
+### Chile:
+
+- Grafico 1: Para este caso, se vera de forma ilustrativa su evolución desde 1970 hasta la actualidad, pero se basara el análisis desde el año 1980 debido a la alta inflación sufrida entre los periodos del gobierno de Salvador Allende (1970-1973). 
+
+Los puntos azules representan los años 1971 y 1981, periodo en el cual Chile logro estabilizar su inflación. La tasa de inflación promedio, excluyendo estos años se aproxima a un 14%, mientras que en 1974 (punto rojo), la inflación alcanzo un 680% aproximadamente. Es por esto que, para poder hacer un análisis a escala, se evaluaran la época posterior a esto, es decir desde 1980 en adelante. 
+
+- Grafico 2: A pesar de eliminar el periodo de alta inflación, Chile ha estado históricamente sobre el promedio mundial de inflación, a excepción de 1995 al 2000 (puntos azules) y del 2007 al 2013 (puntos negros). 
+
+### Costa Rica:
+
+- Grafico 1: Al igual que Chile, Costa Rica también ha estado históricamente sobre la curva del promedio mundial, a excepción de los años entre 1977 y 1980 (puntos azules) en donde logro quedar por debajo de la curva mundial, lo cual no se mantuvo. Sin embargo, en la actualidad han logrado una tasa muy cercana al promedio mundial. 
+
+- Grafico 2: A través de este grafico, se puede ver que desde el 2016 (punto azul), Costa Rica ha logrado mantenerse por debajo del promedio mundial y se mantiene hasta la actualidad.
+
+### Ecuador:
+
+- Grafico 1: A diferencia de los dos países anteriores, Ecuador ha sido el único que ha tenido una tasa de inflación negativa. La recta negra representa la tasa de inflación en 0%, por lo que los valores por debajo de esta, son inflaciones negativas. Ecuador alcanza su menor inflación en 1999 (punto rojo) donde llega a una tasa de -26% aproximadamente.
+ Además, ha estado en su mayoría, por debajo del promedio mundial a excepción de los puntos azules representados en el grafico (1974 y 2001 respectivamente)
+
+### Chile, Ecuador y Costa Rica:
+
+Comparando los tres países, no se logra un análisis evidente, ya que ninguna curva sigue algún patrón en particular. Aun así, se puede ver que la curva de Chile es la con menos picos extremos, pero esto solo sucede cuando se elimina el periodo de inflación excesiva, por lo que no se puede generar algún tipo de conclusión con respecto a este indicador. Lo único que se puede rescatar es que Chile fue el único país que no logro estar por debajo del promedio mundial. 
+
+## Esperanza de Vida: 
+
+### Chile:
+
+Se tiene que la esperanza de vida en Chile ha sido históricamente mayor a la del promedio mundial. Además, pareciera que ambas curvas son relativamente paralelas, por lo que la esperanza de vida chilena ha aumentado a una tasa cercana a la del promedio mundial.
+
+### Costa Rica:
+
+La curva de Costa Rica tiene un comportamiento similar a la de Chile, ya que ha estado por sobre el promedio mundial en los últimos sesenta años, y también ha ido aumentando a tasa similar que el promedio mundial.
+
+### Ecuador:
+
+A diferencia de los dos países anteriores, Ecuador no estuvo siempre por sobre la curva del promedio mundial. De hecho, entre 1960 y 1979 (puntos azules), ambas curvas están prácticamente sobrepuestas. Finalmente, en 1980 Ecuador logra sobrepasar la esperanza de vida promedio mundial y se ha mantenido hasta la actualidad.
+
+### Comparacion: 
+
+Se tiene que la curva de Ecuador se ha mantenido en su totalidad por debajo de las de Chile y Costa Rica. Sin embargo, desde 1960 hasta el 2005 (punto azul), Costa Rica estuvo por sobre Chile, pero a medida que avanzan los años, estas dos esperanzas son cada vez más cercanas. De hecho, la esperanza de vida en Chile y Costa Rica al 2018 era de 80 años aproximadamente. 
+Bajo este indicador, se tiene que Ecuador está por debajo de Chile y Costa Rica, pero queda demostrado que la esperanza de vida para estos dos últimos ha sido prácticamente la misma en los últimos 15 años. 
+
+## Emision C02:
+
+### Chile:
+
+Chile se mantuvo constantemente por debajo de la curva de emisión mundial. Sin embargo, en 2011, la curva de Chile sobrepasa la del promedio mundial (punto azul).
+
+### Costa Rica:
+
+Este país ha estado muy por debajo de la emisión promedio mundial en los últimos 60 años. Es más, el promedio mundial desde 1960 es de 4 toneladas per cápita, mientras que el promedio de Costa Rica es del orden de 1.1 aproximadamente. 
+
+### Ecuador:
+
+Al igual que Costa Rica, Ecuador ha estado históricamente por debajo del promedio de emisión mundial. De hecho, el promedio acumulado de Ecuador es de 1.5 toneladas per cápita; mas de la mitad menos que el promedio mundial.
+
+### Chile,Ecuador y Costa Rica:
+
+Al analizar este ultimo grafico, se puede ver que, si bien la curva chilena estuvo cerca de la ecuatoriana a principios de 1980, rápidamente se aleja de esta. El crecimiento de emisión en Chile aumenta a una tasa mucho más alta que la de los otros dos países. Durante 1988 y 2008, Chile duplico sus toneladas de emisión (1.9 a 4 toneladas per cápita, aumento de 110% aproximadamente), mientras que Ecuador y Costa Rica aumentaron en un 38% (1.3 a 1.8 toneladas per cápita) y 87% (0.8 a 1.5) respectivamente. A pesar que los porcentajes de aumento de Ecuador y Costa Rica no dejan de ser altos, sus emisiones no sobrepasaron nunca el promedio mundial. Como se dijo anteriormente, el promedio de emisión costarricense es de 1.1 toneladas per cápita, la ecuatoriana es de 1.5, mientras que la chilena es de 2.8, muy por encima de los otros dos. 
+
+## Tasa de Desempleo
+
+### Chile:
+
+Se puede ver que luego de los años 1994 a 1996 (puntos azules), Chile a estado con una tasa de desempleo más alta que el promedio mundial. De hecho en 2020, esta ultima alcanzo el 11.5%, mientras que el promedio mundial estaba en un 6.5%. 
+
+### Costa Rica:
+
+Al igual que Chile, Costa Rica también ha estado sobre el promedio los últimos diez anios. En efecto, Costa Rica lo supera luego del 2008 (punto azul) y no ha continuado subiendo. El 2020 su tasa de desempleo alcanzo un 17%, muy por encima del promedio mundial de 6.5%.
+
+### Ecuador: 
+
+A diferencia de los países anteriores, Ecuador ha estado por debajo del promedio los últimos 20 años. Sin embargo, el 2020 alcanzo una tasa de 6.2% muy cercano al 6.5% mundial.
+
+
+```{r desempleo4, echo=FALSE, results='asis'}
+
+
+```
